@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Register - Brand</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
+    <link rel="stylesheet" href="assets/css/styles.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-light navbar-expand-lg bg-white clean-navbar">
+        <div class="container"><a class="navbar-brand logo" href="#">Student</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse"
+                id="navcol-1">
+                <ul class="nav navbar-nav ml-auto"></ul>
+            </div>
+        </div>
+    </nav>
+    <main class="page registration-page">
+        <section class="clean-block clean-form dark">
+            <div class="container">
+                <div class="block-heading">
+                    <h2 class="text-info">STUDENT</h2>
+                </div>
+                <form>
+                    <div class="form-group"><label for="name">Name</label><input class="form-control item" type="text" id="name"></div>
+                    <div class="form-group"><label for="email">Email</label><input class="form-control item" type="email" id="email"></div>
+                    <div class="form-group"><label for="email">Contact</label><input class="form-control" type="number" id="contact"></div>
+                    <div class="form-group"><label >Gender</label>
+                        <div>
+                        <input type="radio" id="male" name="gender" value="male">
+  							<label for="male">Male</label><br>
+  							<input type="radio" id="female" name="gender" value="female">
+  							<label for="female">Female</label><br>
+  							<input type="radio" id="other" name="gender" value="other">
+  							<label for="other">Other</label>
+                        </div>
+                    </div>
+                    <div><label for="email">Country</label><select class="form-control"><optgroup label="This is a group"><option value="USA" selected="">United States of America</option><option value="United Kingdom">United Kingdom</option><option value="Pak">Pakistan</option></optgroup></select></div>
+                    <button id="registe-btn" style="margin-top: 40px" class="btn btn-primary btn-block" type="submit">Register</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    
+    
+    
+    
+    <script type="text/javascript">
+    
+    $(document).ready(function() {
+    	
+    	$("registe-btn").click(
+    	
+    			var name = document.getElementById("name").val();
+    			console.log(name);
+    	
+    	);
+		
+	});
+    
+    </script>
+    
+    <footer class="page-footer dark"></footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script src="assets/js/script.min.js"></script>
+</body>
+
+</html>
