@@ -3,7 +3,12 @@ package daoimpl;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.mysql.fabric.xmlrpc.base.Array;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 import dao.StudentDao;
 import models.Student;
@@ -52,20 +57,86 @@ public class StudentDaoImpl implements StudentDao{
 
 	@Override
 	public Student getStudentById(Integer studentId) {
-		// TODO Auto-generated method stub
-		return null;
+		Student student = null;
+		ResultSet rs = null;
+		try {
+			 PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM student WHERE id=?");
+			 pstmt.setInt(1, studentId);
+			 
+			 rs = pstmt.executeQuery();
+			 
+			 if(rs.next()) {
+				 student = new Student();
+				 student.setId(rs.getInt("id"));
+				 student.setName(rs.getString("name"));
+				 student.setEmail(rs.getString("email"));
+				 student.setContact(rs.getString("contact"));
+				 student.setGender(rs.getString("gender"));
+				 student.setCountry(rs.getString("country"));
+				 
+				 
+				 
+			 }
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error : "+e.getMessage());
+		}
+		return student;
 	}
 
 	@Override
 	public Integer getStudentIdByName(String studentName) {
-		// TODO Auto-generated method stub
+		List<Student> allStudent = new ArrayList<Student>();
+		ResultSet rs = null;
+		try {
+			 PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM student WHERE id=?");
+			 rs = pstmt.executeQuery();
+			 
+			 while(rs.next()) {
+				 Student student = new Student();
+				 student.setId(rs.getInt("id"));
+				 student.setName(rs.getString("name"));
+				 student.setEmail(rs.getString("email"));
+				 student.setContact(rs.getString("contact"));
+				 student.setGender(rs.getString("gender"));
+				 student.setCountry(rs.getString("country"));
+				 
+				 
+				 allStudent.add(student);
+			 }
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error : "+e.getMessage());
+		}
 		return null;
 	}
 
 	@Override
 	public List<Student> getAllStudent() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Student> allStudent = new ArrayList<Student>();
+		ResultSet rs = null;
+		try {
+			 PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM student");
+			 rs = pstmt.executeQuery();
+			 
+			 while(rs.next()) {
+				 Student student = new Student();
+				 student.setId(rs.getInt("id"));
+				 student.setName(rs.getString("name"));
+				 student.setEmail(rs.getString("email"));
+				 student.setContact(rs.getString("contact"));
+				 student.setGender(rs.getString("gender"));
+				 student.setCountry(rs.getString("country"));
+				 
+				 
+				 allStudent.add(student);
+			 }
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error : "+e.getMessage());
+		}
+		return allStudent;
 	}
 
+	 
 }

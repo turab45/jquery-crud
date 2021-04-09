@@ -15,7 +15,7 @@
 
 <body>
     <nav class="navbar navbar-light navbar-expand-lg bg-white clean-navbar">
-        <div class="container"><a class="navbar-brand logo" href="#">Student</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="container"><a class="navbar-brand logo" href="view-all.html">View All</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse"
                 id="navcol-1">
                 <ul class="nav navbar-nav ml-auto"></ul>
@@ -55,6 +55,11 @@
     <script type="text/javascript">
     
     $(document).ready(function() {
+    	
+    	
+    	$.get(function(data){
+    		console.log(data);
+    	});
     	
     	$("#registe-btn").click(function(){
     		var name = $("#name").val();
