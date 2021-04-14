@@ -45,14 +45,44 @@ public class StudentDaoImpl implements StudentDao{
 
 	@Override
 	public Integer updateStudent(Student student) {
-		// TODO Auto-generated method stub
-		return null;
+		Integer row = null;
+		
+		try {
+			 PreparedStatement pstmt = conn.prepareStatement("UPDATE student set name=?,email=?,contact=?,gender=?,country=? WHERE id=?");
+			 pstmt.setString(1, student.getName());
+			 pstmt.setString(2, student.getEmail());
+			 pstmt.setString(3, student.getContact());
+			 pstmt.setString(4, student.getGender());
+			 pstmt.setString(5, student.getCountry());
+			 pstmt.setInt(6, student.getId());
+			 
+			 row = pstmt.executeUpdate();
+			 
+			 
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error : "+e.getMessage());
+		}
+		return row;
 	}
 
 	@Override
 	public Integer deleteStudent(Integer studentId) {
-		// TODO Auto-generated method stub
-		return null;
+		Integer row = null;
+		
+		try {
+			 PreparedStatement pstmt = conn.prepareStatement("Delete from student WHERE id=?");
+			 pstmt.setInt(1, studentId);
+			 
+			 
+			 row = pstmt.executeUpdate();
+			 
+			 
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error : "+e.getMessage());
+		}
+		return row;
 	}
 
 	@Override
@@ -86,29 +116,22 @@ public class StudentDaoImpl implements StudentDao{
 
 	@Override
 	public Integer getStudentIdByName(String studentName) {
-		List<Student> allStudent = new ArrayList<Student>();
+		Integer id = null;
 		ResultSet rs = null;
 		try {
-			 PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM student WHERE id=?");
+			 PreparedStatement pstmt = conn.prepareStatement("SELECT id FROM student WHERE name=?");
+			 pstmt.setString(1, studentName);
+			 
 			 rs = pstmt.executeQuery();
 			 
-			 while(rs.next()) {
-				 Student student = new Student();
-				 student.setId(rs.getInt("id"));
-				 student.setName(rs.getString("name"));
-				 student.setEmail(rs.getString("email"));
-				 student.setContact(rs.getString("contact"));
-				 student.setGender(rs.getString("gender"));
-				 student.setCountry(rs.getString("country"));
-				 
-				 
-				 allStudent.add(student);
+			 if(rs.next()) {
+				id = rs.getInt("id");
 			 }
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Error : "+e.getMessage());
 		}
-		return null;
+		return id;
 	}
 
 	@Override

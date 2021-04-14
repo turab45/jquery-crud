@@ -40,11 +40,17 @@ public class StudentServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		
 		System.out.println("Action  "+action);
+		
+		Integer result = null;
+		Gson gson = new Gson();
+		
+		Student student = null;
+		String studentJson = null;
 
 		switch (action) {
 		case "create":
 			
-			Student student = new Student();
+			student = new Student();
 			
 			student.setName(request.getParameter("name"));
 			student.setEmail(request.getParameter("email"));
@@ -52,27 +58,46 @@ public class StudentServlet extends HttpServlet {
 			student.setGender(request.getParameter("gender"));
 			student.setCountry(request.getParameter("country"));
 			
-			Integer result = studentDaoImpl.addStudent(student);
+			result = studentDaoImpl.addStudent(student);
 			
-			if (result > 0) {
-				response.getWriter().print(result);
-			}
+			Student student2 = studentDaoImpl.getStudentById(studentDaoImpl.getStudentIdByName(student.getName()));
+			response.setContentType("javascript/json");
+			studentJson = gson.toJson(student2);
+			
+			response.getWriter().print(studentJson);
 
 			break;
 		case "update":
 			Integer id = Integer.parseInt(request.getParameter("id"));
 			System.out.println("Update ID : "+id);
+			student = studentDaoImpl.getStudentById(id); 
+			
+			student.setName(request.getParameter("name"));
+			student.setEmail(request.getParameter("email"));
+			student.setContact(request.getParameter("contact"));
+			student.setGender(request.getParameter("gender"));
+			student.setCountry(request.getParameter("country"));
+			
+			result = studentDaoImpl.updateStudent(student);
+			response.setContentType("javascript/json");
+			studentJson = gson.toJson(student);
+			
+			response.getWriter().print(studentJson);
+			
+			
 			break;
 		case "delete":
 			id = Integer.parseInt(request.getParameter("id"));
-			System.out.println("Delete ID : "+id);
+			result = studentDaoImpl.deleteStudent(id);
+			
+			
+			
 			break;
 		case "getAll":
 			
 			response.setContentType("javascript/json");
 			List<Student> allStudent = studentDaoImpl.getAllStudent();
 			
-			Gson gson = new Gson();
 			
 			String jsonList = gson.toJson(allStudent);
 			
@@ -80,6 +105,8 @@ public class StudentServlet extends HttpServlet {
 			
 			
 			break;
+			
+			
 		
 		}
 	}

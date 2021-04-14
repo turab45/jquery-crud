@@ -18,25 +18,38 @@
     <link rel="stylesheet" href="assets/css/Navigation-with-Search.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/styles.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
-    <nav class="navbar navbar-light navbar-expand-md" style="background-color: rgba(224,222,222,0.79);">
-        <div class="container-fluid"><a class="navbar-brand" href="#"></a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse"
-                id="navcol-1">
-                <ul class="nav navbar-nav">
-                    <li class="nav-item" role="presentation"><a class="nav-link active" href="index.html" style="background-color: #055ada;color: white;border: 2px;border-radius: 30px;width: 100px;text-align: center;">ADD</a></li>
-
-                    <li class="nav-item" role="presentation"></li>
-                </ul>
+    <main class="page registration-page">
+        <section class="clean-block clean-form dark">
+            <div class="container">
+                <div class="block-heading">
+                    <h2 class="text-info">STUDENT</h2>
+                </div>
+                <form>
+                    <div class="form-group"><label for="name">Name</label><input class="form-control item" type="text" id="name"></div>
+                    <div class="form-group"><label for="email">Email</label><input class="form-control item" type="email" id="email"></div>
+                    <div class="form-group"><label for="email">Contact</label><input class="form-control" type="number" id="contact"></div>
+                    <div class="form-group"><label >Gender</label>
+                        <div>
+                        <input type="radio" id="male" name="gender" value="male">
+  							<label for="male">Male</label><br>
+  							<input type="radio" id="female" name="gender" value="female">
+  							<label for="female">Female</label><br>
+  							<input type="radio" id="other" name="gender" value="other">
+  							<label for="other">Other</label>
+                        </div>
+                    </div>
+                    <div><label for="email">Country</label><select id="country" name="country" class="form-control"><optgroup label="This is a group"><option value="USA" selected="">United States of America</option><option value="United Kingdom">United Kingdom</option><option value="Pak">Pakistan</option></optgroup></select></div>
+                    <button id="register-btn" style="margin-top: 40px" class="btn btn-primary btn-block" type="button">Register</button>
+                    <button id="update-btn" style="margin-top: 40px" class="btn btn-primary btn-block" type="button">Update</button>
+                </form>
             </div>
-        </div>
-    </nav>
-    
-    
-    <section style="display: flex;justify-content: center;text-align: center;align-items: center;height: 200px;"><label style="height: 90px;font-size: 50px;font-weight: bold;font-family: sans-serif;color: #868e9a;">View All</label></section>
+        </section>
+    </main>
+   
     <section style="width: 80%;margin: 0px auto;/*margin-top: 40px;*/">
     
     
@@ -47,8 +60,8 @@
                     <tr>
                         <th>Roll No</th>
                         <th>Name</th>
-                        <th>Contact</th>
                         <th>Email</th>
+                        <th>Contact</th>
                          <th>Gender</th>
                           <th>Country</th>
                         <th colspan="2">Action</th>
@@ -74,35 +87,143 @@
               	<tbody>
             </table>
         </div>
+        
+      
       
     </section>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     
     <script type="text/javascript">
+    
+    
+    
+    
+    
     	$(document).ready(function(){
     		
-    		$("#studenttable").on('click', '#deletebtn', function(){
-    			var id = $(this).data('id');
-    			$.post('Student?action=delete&&id='+id+'', function(){
-    				
+    		var id = null;
+    		
+    		$('#update-btn').hide();
+    		
+    		
+    		$.get('Student?action=getAll', function(data){
+    			for (var i = 0; i < data.length; i++) {
+    				$('#studenttable').append('<tr id='+data[i].id+'><td data-target=id>'+data[i].id+'</td><td data-target=name>'+data[i].name+'</td><td data-target=email>'+data[i].email+'</td><td data-target=contact>'+data[i].contact+'</td><td data-target=gender>'+data[i].gender+'</td><td data-target=country>'+data[i].country+'</td><td><button id="updatebtn" data-id='+data[i].id+' style="background-color: #2196f3;color: white;border-radius: 30px;border-color: white;">Update</button></td><td><button id="deletebtn" data-id='+data[i].id+' style="background-color: #d64a40;color: white;border-radius: 30px;border-color: white;">Delete</button></td></tr>');
+    			}
+    		});
+    		
+    		
+    		
+    		$("#register-btn").click(function(){
+        		var name = $("#name").val();
+        		var email = $('#email').val();
+        		var contact = $('#contact').val();
+        		var gender = $("input[name='gender']:checked").val();
+        		var country = $('#country option:selected').val();
+        		
+    			console.log(name);
+    			console.log(email);
+    			console.log(contact);
+    			console.log(gender);
+    			console.log(country);
+    			
+    			
+    			$.post('Student?action=create', {
+    				"name":name,
+    				"email":email,
+    				"contact":contact,
+    				"gender":gender,
+    				"country":country
+    			}, function(data, status){
+    				$('#name').val("");
+          	         $('#email').val("");
+          	         $('#contact').val("");
+          	         $(':radio[value=""]').attr('checked', 'checked');
+          	         $('#country').val("");
+          	         
+    				$('#studenttable').append('<tr><td>'+data.id+'</td><td>'+data.name+'</td><td>'+data.email+'</td><td>'+data.contact+'</td><td>'+data.gender+'</td><td>'+data.country+'</td><td><button id="updatebtn" data-id='+data.id+' style="background-color: #2196f3;color: white;border-radius: 30px;border-color: white;">Update</button></td><td><button id="deletebtn" data-id='+data.id+' style="background-color: #d64a40;color: white;border-radius: 30px;border-color: white;">Delete</button></td></tr>');
     			});
+        	});
+    		
+    		$("#studenttable").on('click', '#deletebtn', function(){
+    			
+    			var id = $(this).data('id');
+    			
+    			
+    			if(confirm('Are you sure you wan to delete this?')){
+    			$.post('Student?action=delete&&id='+id+'');
+    			$(this).parent().parent().remove();
+    			}
     		});
     		
     		$('#studenttable').on('click','#updatebtn',function(){
-    			var id = $(this).data('id');
-			$.post('Student?action=update&&id='+id+'', function(){
+    			
+    			$('#register-btn').hide();
+    			$('#update-btn').show();
+    			
+    	         var currentRow=$(this).closest("tr"); 
+    	         
+    	         id=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+    	         var name=currentRow.find("td:eq(1)").text(); // get current row 2nd TD
+    	         var email=currentRow.find("td:eq(2)").text(); // get current row 3rd TD
+    	         var contact=currentRow.find("td:eq(3)").text();
+    	         var gender=currentRow.find("td:eq(4)").text();
+    	         var country=currentRow.find("td:eq(5)").text();
+    	         
+    	         $('#name').val(name);
+    	         $('#email').val(email);
+    	         $('#contact').val(contact);
+    	         $(':radio[value="' + gender + '"]').attr('checked', 'checked');
+    	         $('#country').val(country);
+
+    			
+    		});
+    		
+    		
+    		$('#update-btn').click(function(){
+    			$('#register-btn').show();
+    			$('#update-btn').hide();
+    			
+    			
+    			var name = $("#name").val();
+        		var email = $('#email').val();
+        		var contact = $('#contact').val();
+        		var gender = $("input[name='gender']:checked").val();
+        		var country = $('#country option:selected').val();
+        		
+    			console.log(name);
+    			console.log(email);
+    			console.log(contact);
+    			console.log(gender);
+    			console.log(country);
+    			
+    			
+    			$.post('Student?action=update&&id='+id+'', {
+    				"name":name,
+    				"email":email,
+    				"contact":contact,
+    				"gender":gender,
+    				"country":country
+    			}, function(data, status){
+    				console.log(data);
     				
+    				$('#'+id).children('td[data-target=name]').text(name);
+    				$('#'+id).children('td[data-target=email]').text(email);
+    				$('#'+id).children('td[data-target=contact]').text(contact);
+    				$('#'+id).children('td[data-target=gender]').text(gender);
+    				$('#'+id).children('td[data-target=country]').text(country);
+    				
+    			$('#name').val("");
+       	         $('#email').val("");
+       	         $('#contact').val("");
+       	         $(':radio[value=""]').attr('checked', 'checked');
+       	         $('#country').val("");
+    				 
+    				//$('#studenttable').append('<tr><td>'+data.id+'</td><td>'+data.name+'</td><td>'+data.email+'</td><td>'+data.contact+'</td><td>'+data.gender+'</td><td>'+data.country+'</td><td><button id="updatebtn" data-id='+data.id+' style="background-color: #2196f3;color: white;border-radius: 30px;border-color: white;">Update</button></td><td><button id="deletebtn" data-id='+data.id+' style="background-color: #d64a40;color: white;border-radius: 30px;border-color: white;">Delete</button></td></tr>');
     			});
     		});
 		
-		$.get('Student?action=getAll', function(data){
-			
-			
-			for (var i = 0; i < data.length; i++) {
-				$('#studenttable').append('<tr><td>'+data[i].id+'</td><td>'+data[i].name+'</td><td>'+data[i].email+'</td><td>'+data[i].contact+'</td><td>'+data[i].gender+'</td><td>'+data[i].country+'</td><td><button id="updatebtn" data-id='+data[i].id+' style="background-color: #2196f3;color: white;border-radius: 30px;border-color: white;">Update</button></td><td><button id="deletebtn" data-id='+data[i].id+' style="background-color: #d64a40;color: white;border-radius: 30px;border-color: white;">Delete</button></td></tr>');
-			}
-});
 		
 		
 });
